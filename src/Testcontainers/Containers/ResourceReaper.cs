@@ -32,7 +32,7 @@ namespace DotNet.Testcontainers.Containers
     /// </summary>
     private const int RetryTimeoutInSeconds = 2;
 
-    private static readonly IDockerImage RyukImage = new DockerImage("testcontainers/ryuk:0.3.4");
+    private static readonly IDockerImage RyukImage = new DockerImage("mdelapenya/ryuk:temp3");
 
     private static readonly SemaphoreSlim DefaultLock = new SemaphoreSlim(1, 1);
 
@@ -124,14 +124,11 @@ namespace DotNet.Testcontainers.Containers
         var isWindowsEngineEnabled = await dockerSystemOperations.GetIsWindowsEngineEnabled(ct)
           .ConfigureAwait(false);
 
-        if (isWindowsEngineEnabled)
-        {
-          return null;
-        }
-
         var resourceReaperImage = TestcontainersSettings.ResourceReaperImage ?? RyukImage;
 
-        defaultInstance = await GetAndStartNewAsync(DefaultSessionId, dockerEndpointAuthConfig, resourceReaperImage, UnixSocketMount.Instance, ct: ct)
+        var dockerSocket = isWindowsEngineEnabled ? NamedPipeSocketMount.Instance : UnixSocketMount.Instance;
+
+        defaultInstance = await GetAndStartNewAsync(DefaultSessionId, dockerEndpointAuthConfig, resourceReaperImage, dockerSocket, ct: ct)
           .ConfigureAwait(false);
 
         return defaultInstance;
