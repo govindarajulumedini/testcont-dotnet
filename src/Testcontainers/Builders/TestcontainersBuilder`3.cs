@@ -195,6 +195,13 @@ namespace DotNet.Testcontainers.Builders
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
+    public TBuilderEntity WithMount(IMount mount)
+    {
+      var mounts = new[] { mount };
+      return this.Clone(new TestcontainersConfiguration(mounts: mounts));
+    }
+
+    /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithBindMount(string source, string destination)
     {
       return this.WithBindMount(source, destination, AccessMode.ReadWrite);
@@ -203,8 +210,7 @@ namespace DotNet.Testcontainers.Builders
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithBindMount(string source, string destination, AccessMode accessMode)
     {
-      var mounts = new IMount[] { new BindMount(source, destination, accessMode) };
-      return this.Clone(new TestcontainersConfiguration(mounts: mounts));
+      return this.WithMount(new BindMount(source, destination, accessMode));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
@@ -228,8 +234,7 @@ namespace DotNet.Testcontainers.Builders
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithVolumeMount(IDockerVolume source, string destination, AccessMode accessMode)
     {
-      var mounts = new IMount[] { new VolumeMount(source, destination, accessMode) };
-      return this.Clone(new TestcontainersConfiguration(mounts: mounts));
+      return this.WithMount(new VolumeMount(source, destination, accessMode));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
@@ -241,8 +246,7 @@ namespace DotNet.Testcontainers.Builders
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithTmpfsMount(string destination, AccessMode accessMode)
     {
-      var mounts = new IMount[] { new TmpfsMount(destination, accessMode) };
-      return this.Clone(new TestcontainersConfiguration(mounts: mounts));
+      return this.WithMount(new TmpfsMount(destination, accessMode));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
