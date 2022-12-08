@@ -12,6 +12,7 @@ namespace DotNet.Testcontainers.Builders
   /// <typeparam name="TBuilderEntity">The builder entity.</typeparam>
   /// <typeparam name="TResourceEntity">The resource entity.</typeparam>
   /// <typeparam name="TConfigurationEntity">The configuration entity.</typeparam>
+  [PublicAPI]
   public abstract class AbstractBuilder<TBuilderEntity, TResourceEntity, TConfigurationEntity> : IAbstractBuilder<TBuilderEntity, TResourceEntity>
     where TConfigurationEntity : IDockerResourceConfiguration
   {
@@ -45,7 +46,7 @@ namespace DotNet.Testcontainers.Builders
     /// <inheritdoc cref="IAbstractBuilder{TBuilderEntity, TContainerEntity}" />
     public virtual TBuilderEntity WithDockerEndpoint(IDockerEndpointAuthenticationConfiguration dockerEndpointAuthConfig)
     {
-      return this.Clone(new DockerResourceConfiguration(dockerEndpointAuthenticationConfiguration: dockerEndpointAuthConfig));
+      return this.Clone(new DockerResourceConfiguration(dockerEndpointAuthConfig));
     }
 
     /// <inheritdoc cref="IAbstractBuilder{TBuilderEntity, TContainerEntity}" />
@@ -75,15 +76,14 @@ namespace DotNet.Testcontainers.Builders
     /// </summary>
     /// <param name="dockerResourceConfiguration">The Docker resource configuration.</param>
     /// <returns>A configured instance of <typeparamref name="TBuilderEntity" />.</returns>
-    [PublicAPI]
     protected abstract TBuilderEntity Clone(IDockerResourceConfiguration dockerResourceConfiguration);
 
     /// <summary>
-    /// Clones the Docker resource builder configuration.
+    /// Merges the Docker resource builder configuration.
     /// </summary>
-    /// <param name="dockerResourceConfiguration">The Docker resource configuration.</param>
+    /// <param name="next"></param>
+    /// <param name="previous"></param>
     /// <returns>A configured instance of <typeparamref name="TBuilderEntity" />.</returns>
-    [PublicAPI]
-    protected abstract TBuilderEntity Clone(TConfigurationEntity dockerResourceConfiguration);
+    protected abstract TBuilderEntity Merge(TConfigurationEntity next, TConfigurationEntity previous);
   }
 }

@@ -15,7 +15,7 @@ namespace DotNet.Testcontainers.Containers
   using Microsoft.Extensions.Logging;
 
   /// <inheritdoc cref="ITestcontainersContainer" />
-  internal class TestcontainersContainer : ITestcontainersContainer
+  public class TestcontainersContainer : ITestcontainersContainer
   {
     private const TestcontainersStates ContainerHasBeenCreatedStates = TestcontainersStates.Created | TestcontainersStates.Running | TestcontainersStates.Exited;
 

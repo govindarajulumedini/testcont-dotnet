@@ -1,5 +1,6 @@
 namespace DotNet.Testcontainers.Builders
 {
+  using System;
   using DotNet.Testcontainers.Configurations;
   using DotNet.Testcontainers.Containers;
   using JetBrains.Annotations;
@@ -24,19 +25,25 @@ namespace DotNet.Testcontainers.Builders
     /// <inheritdoc />
     public override ITestcontainersContainer Build()
     {
-      throw new System.NotImplementedException();
+      throw new NotImplementedException();
     }
 
     /// <inheritdoc />
     protected override TestcontainersBuilder Clone(IDockerResourceConfiguration dockerResourceConfiguration)
     {
-      throw new System.NotImplementedException();
+      throw new NotImplementedException();
     }
 
     /// <inheritdoc />
     protected override TestcontainersBuilder Clone(ITestcontainersConfiguration dockerResourceConfiguration)
     {
-      throw new System.NotImplementedException();
+      throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    protected override TestcontainersBuilder Merge(ITestcontainersConfiguration next, ITestcontainersConfiguration previous)
+    {
+      throw new NotImplementedException();
     }
   }
 }

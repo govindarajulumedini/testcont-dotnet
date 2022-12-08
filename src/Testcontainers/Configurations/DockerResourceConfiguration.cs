@@ -4,36 +4,12 @@
   using System.Collections.Generic;
   using DotNet.Testcontainers.Builders;
   using DotNet.Testcontainers.Containers;
+  using JetBrains.Annotations;
 
   /// <inheritdoc cref="IDockerResourceConfiguration" />
-  internal class DockerResourceConfiguration : IDockerResourceConfiguration
+  [PublicAPI]
+  public class DockerResourceConfiguration : IDockerResourceConfiguration
   {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DockerResourceConfiguration" /> class.
-    /// </summary>
-    /// <param name="dockerResourceConfiguration">The Docker resource configuration.</param>
-    public DockerResourceConfiguration(IDockerResourceConfiguration dockerResourceConfiguration)
-      : this(dockerResourceConfiguration.DockerEndpointAuthConfig, dockerResourceConfiguration.Labels)
-    {
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DockerResourceConfiguration" /> class.
-    /// </summary>
-    /// <param name="next">The next configuration.</param>
-    /// <param name="previous">The previous configuration.</param>
-    public DockerResourceConfiguration(IDockerResourceConfiguration next, IDockerResourceConfiguration previous)
-      : this(
-        BuildConfiguration.Combine(next.DockerEndpointAuthConfig, previous.DockerEndpointAuthConfig),
-        BuildConfiguration.Combine(next.Labels, previous.Labels))
-    {
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DockerResourceConfiguration" /> class.
-    /// </summary>
-    /// <param name="dockerEndpointAuthenticationConfiguration">The Docker endpoint authentication configuration.</param>
-    /// <param name="labels">A list of labels.</param>
     public DockerResourceConfiguration(
       IDockerEndpointAuthenticationConfiguration dockerEndpointAuthenticationConfiguration = null,
       IReadOnlyDictionary<string, string> labels = null)
@@ -41,6 +17,18 @@
       this.DockerEndpointAuthConfig = dockerEndpointAuthenticationConfiguration;
       this.Labels = labels;
       this.SessionId = labels != null && labels.TryGetValue(ResourceReaper.ResourceReaperSessionLabel, out var resourceReaperSessionId) && Guid.TryParseExact(resourceReaperSessionId, "D", out var sessionId) ? sessionId : Guid.Empty;
+    }
+
+    protected DockerResourceConfiguration(IDockerResourceConfiguration dockerResourceConfiguration)
+      : this(dockerResourceConfiguration, new DockerResourceConfiguration())
+    {
+    }
+
+    protected DockerResourceConfiguration(IDockerResourceConfiguration next, IDockerResourceConfiguration previous)
+    {
+      this.DockerEndpointAuthConfig = BuildConfiguration.Combine(next.DockerEndpointAuthConfig, previous.DockerEndpointAuthConfig);
+      this.Labels = BuildConfiguration.Combine(next.Labels, previous.Labels);
+      this.SessionId = BuildConfiguration.Combine(next.SessionId, previous.SessionId);
     }
 
     /// <inheritdoc />

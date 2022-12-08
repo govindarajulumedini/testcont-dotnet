@@ -4,8 +4,14 @@
 
   public interface IExampleTestcontainersConfiguration : ITestcontainersConfiguration
   {
+    /// <summary>
+    ///
+    /// </summary>
     string Username { get; }
 
+    /// <summary>
+    ///
+    /// </summary>
     string Password { get; }
   }
 }

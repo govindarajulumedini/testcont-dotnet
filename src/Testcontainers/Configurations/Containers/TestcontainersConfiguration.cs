@@ -2,144 +2,20 @@ namespace DotNet.Testcontainers.Configurations
 {
   using System;
   using System.Collections.Generic;
-  using System.Collections.ObjectModel;
   using System.Threading;
   using System.Threading.Tasks;
   using Docker.DotNet.Models;
   using DotNet.Testcontainers.Builders;
-  using DotNet.Testcontainers.Clients;
   using DotNet.Testcontainers.Containers;
   using DotNet.Testcontainers.Images;
   using DotNet.Testcontainers.Networks;
+  using JetBrains.Annotations;
 
   /// <inheritdoc cref="ITestcontainersConfiguration" />
-  internal class TestcontainersConfiguration : DockerResourceConfiguration, ITestcontainersConfiguration
+  [PublicAPI]
+  public class TestcontainersConfiguration : DockerResourceConfiguration, ITestcontainersConfiguration
   {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TestcontainersConfiguration" /> class.
-    /// </summary>
-    public TestcontainersConfiguration()
-      : this(
-        dockerEndpointAuthenticationConfiguration: TestcontainersSettings.OS.DockerEndpointAuthConfig,
-        dockerRegistryAuthenticationConfiguration: default(DockerRegistryAuthenticationConfiguration),
-        labels: DefaultLabels.Instance,
-        resourceMappings: new ReadOnlyDictionary<string, IResourceMapping>(new Dictionary<string, IResourceMapping>()),
-        outputConsumer: Consume.DoNotConsumeStdoutAndStderr(),
-        waitStrategies: Wait.ForUnixContainer().Build(),
-        startupCallback: (_, ct) => Task.CompletedTask,
-        autoRemove: false,
-        privileged: false,
-        imagePullPolicy: PullPolicy.Missing)
-    {
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TestcontainersConfiguration" /> class.
-    /// </summary>
-    /// <param name="dockerResourceConfiguration">The Docker container configuration.</param>
-    public TestcontainersConfiguration(IDockerResourceConfiguration dockerResourceConfiguration)
-      : base(dockerResourceConfiguration)
-    {
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TestcontainersConfiguration" /> class.
-    /// </summary>
-    /// <param name="dockerResourceConfiguration">The Docker container configuration.</param>
-    public TestcontainersConfiguration(ITestcontainersConfiguration dockerResourceConfiguration)
-      : this(
-        dockerResourceConfiguration.DockerEndpointAuthConfig,
-        dockerResourceConfiguration.DockerRegistryAuthConfig,
-        dockerResourceConfiguration.Image,
-        dockerResourceConfiguration.ImagePullPolicy,
-        dockerResourceConfiguration.Name,
-        dockerResourceConfiguration.Hostname,
-        dockerResourceConfiguration.MacAddress,
-        dockerResourceConfiguration.WorkingDirectory,
-        dockerResourceConfiguration.Entrypoint,
-        dockerResourceConfiguration.Command,
-        dockerResourceConfiguration.Environments,
-        dockerResourceConfiguration.Labels,
-        dockerResourceConfiguration.ExposedPorts,
-        dockerResourceConfiguration.PortBindings,
-        dockerResourceConfiguration.ResourceMappings,
-        dockerResourceConfiguration.Mounts,
-        dockerResourceConfiguration.Networks,
-        dockerResourceConfiguration.NetworkAliases,
-        dockerResourceConfiguration.OutputConsumer,
-        dockerResourceConfiguration.WaitStrategies,
-        dockerResourceConfiguration.ParameterModifiers,
-        dockerResourceConfiguration.StartupCallback,
-        dockerResourceConfiguration.AutoRemove,
-        dockerResourceConfiguration.Privileged)
-    {
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TestcontainersConfiguration" /> class.
-    /// </summary>
-    /// <param name="next">The next configuration.</param>
-    /// <param name="previous">The previous configuration.</param>
-    public TestcontainersConfiguration(ITestcontainersConfiguration next, ITestcontainersConfiguration previous)
-      : this(
-        BuildConfiguration.Combine(next.DockerEndpointAuthConfig, previous.DockerEndpointAuthConfig),
-        BuildConfiguration.Combine(next.DockerRegistryAuthConfig, previous.DockerRegistryAuthConfig),
-        BuildConfiguration.Combine(next.Image, previous.Image),
-        BuildConfiguration.Combine(next.ImagePullPolicy, previous.ImagePullPolicy),
-        BuildConfiguration.Combine(next.Name, previous.Name),
-        BuildConfiguration.Combine(next.Hostname, previous.Hostname),
-        BuildConfiguration.Combine(next.MacAddress, previous.MacAddress),
-        BuildConfiguration.Combine(next.WorkingDirectory, previous.WorkingDirectory),
-        BuildConfiguration.Combine(next.Entrypoint, previous.Entrypoint),
-        BuildConfiguration.Combine(next.Command, previous.Command),
-        BuildConfiguration.Combine(next.Environments, previous.Environments),
-        BuildConfiguration.Combine(next.Labels, previous.Labels),
-        BuildConfiguration.Combine(next.ExposedPorts, previous.ExposedPorts),
-        BuildConfiguration.Combine(next.PortBindings, previous.PortBindings),
-        BuildConfiguration.Combine(next.ResourceMappings, previous.ResourceMappings),
-        BuildConfiguration.Combine(next.Mounts, previous.Mounts),
-        BuildConfiguration.Combine(next.Networks, previous.Networks),
-        BuildConfiguration.Combine(next.NetworkAliases, previous.NetworkAliases),
-        BuildConfiguration.Combine(next.OutputConsumer, previous.OutputConsumer),
-        BuildConfiguration.Combine(next.WaitStrategies, previous.WaitStrategies),
-        BuildConfiguration.Combine(next.ParameterModifiers, previous.ParameterModifiers),
-        BuildConfiguration.Combine(next.StartupCallback, previous.StartupCallback),
-        (next.AutoRemove.HasValue && next.AutoRemove.Value) || (previous.AutoRemove.HasValue && previous.AutoRemove.Value),
-        (next.Privileged.HasValue && next.Privileged.Value) || (previous.Privileged.HasValue && previous.Privileged.Value))
-    {
-    }
-
-#pragma warning disable S107
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TestcontainersConfiguration" /> class.
-    /// </summary>
-    /// <param name="dockerEndpointAuthenticationConfiguration">The Docker endpoint authentication configuration.</param>
-    /// <param name="dockerRegistryAuthenticationConfiguration">The Docker registry authentication configuration.</param>
-    /// <param name="image">The Docker image.</param>
-    /// <param name="imagePullPolicy">The image pull policy.</param>
-    /// <param name="name">The name.</param>
-    /// <param name="hostname">The hostname.</param>
-    /// <param name="macAddress">The MAC address.</param>
-    /// <param name="workingDirectory">The working directory.</param>
-    /// <param name="entrypoint">The entrypoint.</param>
-    /// <param name="command">The command.</param>
-    /// <param name="environments">The environment variables.</param>
-    /// <param name="labels">The labels.</param>
-    /// <param name="exposedPorts">The exposed ports.</param>
-    /// <param name="portBindings">The port bindings.</param>
-    /// <param name="resourceMappings">The resource mappings.</param>
-    /// <param name="mounts">The mounts.</param>
-    /// <param name="networks">The networks.</param>
-    /// <param name="networkAliases">The container network aliases.</param>
-    /// <param name="outputConsumer">The output consumer.</param>
-    /// <param name="waitStrategies">The wait strategies.</param>
-    /// <param name="parameterModifiers">The actions that modifies the <see cref="CreateContainerParameters" /> configuration.</param>
-    /// <param name="startupCallback">The startup callback.</param>
-    /// <param name="autoRemove">A value indicating whether the Testcontainer is removed by the Docker daemon or not.</param>
-    /// <param name="privileged">A value indicating whether the Testcontainer has extended privileges or not.</param>
     public TestcontainersConfiguration(
-      IDockerEndpointAuthenticationConfiguration dockerEndpointAuthenticationConfiguration = null,
       IDockerRegistryAuthenticationConfiguration dockerRegistryAuthenticationConfiguration = null,
       IDockerImage image = null,
       Func<ImagesListResponse, bool> imagePullPolicy = null,
@@ -150,7 +26,6 @@ namespace DotNet.Testcontainers.Configurations
       IEnumerable<string> entrypoint = null,
       IEnumerable<string> command = null,
       IReadOnlyDictionary<string, string> environments = null,
-      IReadOnlyDictionary<string, string> labels = null,
       IReadOnlyDictionary<string, string> exposedPorts = null,
       IReadOnlyDictionary<string, string> portBindings = null,
       IReadOnlyDictionary<string, IResourceMapping> resourceMappings = null,
@@ -163,7 +38,6 @@ namespace DotNet.Testcontainers.Configurations
       Func<ITestcontainersContainer, CancellationToken, Task> startupCallback = null,
       bool? autoRemove = null,
       bool? privileged = null)
-      : base(dockerEndpointAuthenticationConfiguration, labels)
     {
       this.AutoRemove = autoRemove;
       this.Privileged = privileged;
@@ -189,7 +63,42 @@ namespace DotNet.Testcontainers.Configurations
       this.StartupCallback = startupCallback;
     }
 
-#pragma warning restore S107
+    protected TestcontainersConfiguration(IDockerResourceConfiguration dockerResourceConfiguration)
+      : base(dockerResourceConfiguration)
+    {
+    }
+
+    protected TestcontainersConfiguration(ITestcontainersConfiguration dockerResourceConfiguration)
+      : this(dockerResourceConfiguration, new TestcontainersConfiguration())
+    {
+    }
+
+    protected TestcontainersConfiguration(ITestcontainersConfiguration next, ITestcontainersConfiguration previous)
+      : base(next, previous)
+    {
+      this.DockerRegistryAuthConfig = BuildConfiguration.Combine(next.DockerRegistryAuthConfig, previous.DockerRegistryAuthConfig);
+      this.Image = BuildConfiguration.Combine(next.Image, previous.Image);
+      this.ImagePullPolicy = BuildConfiguration.Combine(next.ImagePullPolicy, previous.ImagePullPolicy);
+      this.Name = BuildConfiguration.Combine(next.Name, previous.Name);
+      this.Hostname = BuildConfiguration.Combine(next.Hostname, previous.Hostname);
+      this.MacAddress = BuildConfiguration.Combine(next.MacAddress, previous.MacAddress);
+      this.WorkingDirectory = BuildConfiguration.Combine(next.WorkingDirectory, previous.WorkingDirectory);
+      this.Entrypoint = BuildConfiguration.Combine(next.Entrypoint, previous.Entrypoint);
+      this.Command = BuildConfiguration.Combine(next.Command, previous.Command);
+      this.Environments = BuildConfiguration.Combine(next.Environments, previous.Environments);
+      this.ExposedPorts = BuildConfiguration.Combine(next.ExposedPorts, previous.ExposedPorts);
+      this.PortBindings = BuildConfiguration.Combine(next.PortBindings, previous.PortBindings);
+      this.ResourceMappings = BuildConfiguration.Combine(next.ResourceMappings, previous.ResourceMappings);
+      this.Mounts = BuildConfiguration.Combine(next.Mounts, previous.Mounts);
+      this.Networks = BuildConfiguration.Combine(next.Networks, previous.Networks);
+      this.NetworkAliases = BuildConfiguration.Combine(next.NetworkAliases, previous.NetworkAliases);
+      this.OutputConsumer = BuildConfiguration.Combine(next.OutputConsumer, previous.OutputConsumer);
+      this.WaitStrategies = BuildConfiguration.Combine(next.WaitStrategies, previous.WaitStrategies);
+      this.ParameterModifiers = BuildConfiguration.Combine(next.ParameterModifiers, previous.ParameterModifiers);
+      this.StartupCallback = BuildConfiguration.Combine(next.StartupCallback, previous.StartupCallback);
+      this.AutoRemove = (next.AutoRemove.HasValue && next.AutoRemove.Value) || (previous.AutoRemove.HasValue && previous.AutoRemove.Value);
+      this.Privileged = (next.Privileged.HasValue && next.Privileged.Value) || (previous.Privileged.HasValue && previous.Privileged.Value);
+    }
 
     /// <inheritdoc />
     public bool? AutoRemove { get; }
@@ -239,10 +148,10 @@ namespace DotNet.Testcontainers.Configurations
     /// <inheritdoc />
     public IEnumerable<IMount> Mounts { get; }
 
-    /// <inheritdoc />>
+    /// <inheritdoc />
     public IEnumerable<IDockerNetwork> Networks { get; }
 
-    /// <inheritdoc />>
+    /// <inheritdoc />
     public IEnumerable<string> NetworkAliases { get; }
 
     /// <inheritdoc />

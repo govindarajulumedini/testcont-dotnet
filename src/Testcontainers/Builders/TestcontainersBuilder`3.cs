@@ -12,6 +12,7 @@ namespace DotNet.Testcontainers.Builders
   using DotNet.Testcontainers.Images;
   using DotNet.Testcontainers.Networks;
   using DotNet.Testcontainers.Volumes;
+  using JetBrains.Annotations;
 
   /// <summary>
   /// This class represents the fluent Testcontainers builder. Each change creates a new instance of <see cref="TestcontainersBuilder{TBuilderEntity, TContainerEntity, TConfigurationEntity}" />.
@@ -37,6 +38,7 @@ namespace DotNet.Testcontainers.Builders
   /// <typeparam name="TBuilderEntity">The builder entity.</typeparam>
   /// <typeparam name="TContainerEntity">The container entity.</typeparam>
   /// <typeparam name="TConfigurationEntity">The configuration entity.</typeparam>
+  [PublicAPI]
   public abstract class TestcontainersBuilder<TBuilderEntity, TContainerEntity, TConfigurationEntity> : AbstractBuilder<TBuilderEntity, TContainerEntity, TConfigurationEntity>, ITestcontainersBuilder<TBuilderEntity, TContainerEntity>
     where TContainerEntity : ITestcontainersContainer
     where TConfigurationEntity : ITestcontainersConfiguration
@@ -65,7 +67,7 @@ namespace DotNet.Testcontainers.Builders
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithImage(IDockerImage image)
     {
-      return this.Clone(new TestcontainersConfiguration(image: PrependHubImageNamePrefix(image)));
+      return this.Clone(new TestcontainersConfiguration(image: image));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
@@ -317,19 +319,11 @@ namespace DotNet.Testcontainers.Builders
       return this.Clone(new TestcontainersConfiguration(startupCallback: startupCallback));
     }
 
-    private static IDockerImage PrependHubImageNamePrefix(IDockerImage image)
-    {
-      if (string.IsNullOrEmpty(TestcontainersSettings.HubImageNamePrefix))
-      {
-        return image;
-      }
-
-      if (!string.IsNullOrEmpty(image.GetHostname()))
-      {
-        return image;
-      }
-
-      return new DockerImage(image.Repository, image.Name, image.Tag, TestcontainersSettings.HubImageNamePrefix);
-    }
+    /// <summary>
+    /// Clones the Docker resource builder configuration.
+    /// </summary>
+    /// <param name="dockerResourceConfiguration">The Docker resource configuration.</param>
+    /// <returns>A configured instance of <typeparamref name="TBuilderEntity" />.</returns>
+    protected abstract TBuilderEntity Clone(ITestcontainersConfiguration dockerResourceConfiguration);
   }
 }
