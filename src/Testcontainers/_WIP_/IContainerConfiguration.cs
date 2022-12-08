@@ -12,7 +12,7 @@ namespace DotNet.Testcontainers.Configurations
   /// <summary>
   /// A Testcontainer configuration.
   /// </summary>
-  public interface ITestcontainersConfiguration : IDockerResourceConfiguration
+  public interface IContainerConfiguration : IResourceConfiguration
   {
     /// <summary>
     /// Gets a value indicating whether the Testcontainer is removed by the Docker daemon or not.

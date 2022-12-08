@@ -6,11 +6,11 @@
   using DotNet.Testcontainers.Containers;
   using JetBrains.Annotations;
 
-  /// <inheritdoc cref="IDockerResourceConfiguration" />
+  /// <inheritdoc cref="IResourceConfiguration" />
   [PublicAPI]
-  public class DockerResourceConfiguration : IDockerResourceConfiguration
+  public class ResourceConfiguration : IResourceConfiguration
   {
-    public DockerResourceConfiguration(
+    public ResourceConfiguration(
       IDockerEndpointAuthenticationConfiguration dockerEndpointAuthenticationConfiguration = null,
       IReadOnlyDictionary<string, string> labels = null)
     {
@@ -19,12 +19,12 @@
       this.SessionId = labels != null && labels.TryGetValue(ResourceReaper.ResourceReaperSessionLabel, out var resourceReaperSessionId) && Guid.TryParseExact(resourceReaperSessionId, "D", out var sessionId) ? sessionId : Guid.Empty;
     }
 
-    protected DockerResourceConfiguration(IDockerResourceConfiguration dockerResourceConfiguration)
-      : this(dockerResourceConfiguration, new DockerResourceConfiguration())
+    protected ResourceConfiguration(IResourceConfiguration resourceConfiguration)
+      : this(resourceConfiguration, new ResourceConfiguration())
     {
     }
 
-    protected DockerResourceConfiguration(IDockerResourceConfiguration next, IDockerResourceConfiguration previous)
+    protected ResourceConfiguration(IResourceConfiguration next, IResourceConfiguration previous)
     {
       this.DockerEndpointAuthConfig = BuildConfiguration.Combine(next.DockerEndpointAuthConfig, previous.DockerEndpointAuthConfig);
       this.Labels = BuildConfiguration.Combine(next.Labels, previous.Labels);

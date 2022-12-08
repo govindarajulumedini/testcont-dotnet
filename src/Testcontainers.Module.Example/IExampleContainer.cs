@@ -4,7 +4,7 @@ namespace Testcontainers.Module.Example
   using JetBrains.Annotations;
 
   [PublicAPI]
-  public interface IExampleTestcontainers : ITestcontainersContainer
+  public interface IExampleContainer : ITestcontainersContainer
   {
     [PublicAPI]
     string Username { get; }

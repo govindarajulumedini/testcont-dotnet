@@ -3,14 +3,14 @@ namespace DotNet.Testcontainers.Configurations
   using System.Collections.Generic;
 
   /// <inheritdoc cref="ITestcontainersVolumeConfiguration" />
-  internal sealed class TestcontainersVolumeConfiguration : DockerResourceConfiguration, ITestcontainersVolumeConfiguration
+  internal sealed class TestcontainersVolumeConfiguration : ResourceConfiguration, ITestcontainersVolumeConfiguration
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="TestcontainersVolumeConfiguration" /> class.
     /// </summary>
-    /// <param name="dockerResourceConfiguration">The Docker resource configuration.</param>
-    public TestcontainersVolumeConfiguration(IDockerResourceConfiguration dockerResourceConfiguration)
-      : base(dockerResourceConfiguration)
+    /// <param name="resourceConfiguration">The Docker resource configuration.</param>
+    public TestcontainersVolumeConfiguration(IResourceConfiguration resourceConfiguration)
+      : base(resourceConfiguration)
     {
     }
 

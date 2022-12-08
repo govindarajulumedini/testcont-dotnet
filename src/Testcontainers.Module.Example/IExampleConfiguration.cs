@@ -2,7 +2,7 @@
 {
   using DotNet.Testcontainers.Configurations;
 
-  public interface IExampleTestcontainersConfiguration : ITestcontainersConfiguration
+  public interface IExampleConfiguration : IContainerConfiguration
   {
     /// <summary>
     ///

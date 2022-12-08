@@ -54,7 +54,7 @@ namespace DotNet.Testcontainers.Containers
 
     private ResourceReaper(Guid sessionId, IDockerEndpointAuthenticationConfiguration dockerEndpointAuthConfig, IDockerImage resourceReaperImage, IMount dockerSocket, bool requiresPrivilegedMode)
     {
-      this.resourceReaperContainer = new TestcontainersBuilder<TestcontainersContainer>()
+      this.resourceReaperContainer = new ContainerBuilder<TestcontainersContainer>()
         .WithName($"testcontainers-ryuk-{sessionId:D}")
         .WithDockerEndpoint(dockerEndpointAuthConfig)
         .WithImage(resourceReaperImage)

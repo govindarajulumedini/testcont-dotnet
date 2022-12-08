@@ -16,7 +16,7 @@ namespace DotNet.Testcontainers.Clients
 
     private const string SctpPortSuffix = "/sctp";
 
-    public TestcontainersConfigurationConverter(ITestcontainersConfiguration configuration)
+    public TestcontainersConfigurationConverter(IContainerConfiguration configuration)
     {
       this.Entrypoint = new ToCollection().Convert(configuration.Entrypoint)?.ToList();
       this.Command = new ToCollection().Convert(configuration.Command)?.ToList();
@@ -84,9 +84,9 @@ namespace DotNet.Testcontainers.Clients
 
     private sealed class ToNetworks : CollectionConverter<IDockerNetwork, KeyValuePair<string, EndpointSettings>>
     {
-      private readonly ITestcontainersConfiguration configuration;
+      private readonly IContainerConfiguration configuration;
 
-      public ToNetworks(ITestcontainersConfiguration configuration)
+      public ToNetworks(IContainerConfiguration configuration)
         : base(nameof(ToNetworks))
       {
         this.configuration = configuration;

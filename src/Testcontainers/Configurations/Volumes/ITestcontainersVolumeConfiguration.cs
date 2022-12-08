@@ -3,7 +3,7 @@ namespace DotNet.Testcontainers.Configurations
   /// <summary>
   /// A Docker volume configuration.
   /// </summary>
-  public interface ITestcontainersVolumeConfiguration : IDockerResourceConfiguration
+  public interface ITestcontainersVolumeConfiguration : IResourceConfiguration
   {
     /// <summary>
     /// Gets the name.

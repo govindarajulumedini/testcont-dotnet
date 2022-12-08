@@ -5,7 +5,7 @@
   /// <summary>
   /// A Docker network configuration.
   /// </summary>
-  public interface ITestcontainersNetworkConfiguration : IDockerResourceConfiguration
+  public interface ITestcontainersNetworkConfiguration : IResourceConfiguration
   {
     /// <summary>
     /// Gets the name.

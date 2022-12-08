@@ -15,7 +15,7 @@ namespace DotNet.Testcontainers.Builders
   using JetBrains.Annotations;
 
   /// <summary>
-  /// This class represents the fluent Testcontainers builder. Each change creates a new instance of <see cref="TestcontainersBuilder{TBuilderEntity, TContainerEntity, TConfigurationEntity}" />.
+  /// This class represents the fluent Testcontainers builder. Each change creates a new instance of <see cref="ContainerBuilder{TBuilderEntity,TContainerEntity,TConfigurationEntity}" />.
   /// With this behaviour we can reuse previous configured configurations and create similar Testcontainers with only little effort.
   /// </summary>
   /// <example>
@@ -39,15 +39,15 @@ namespace DotNet.Testcontainers.Builders
   /// <typeparam name="TContainerEntity">The container entity.</typeparam>
   /// <typeparam name="TConfigurationEntity">The configuration entity.</typeparam>
   [PublicAPI]
-  public abstract class TestcontainersBuilder<TBuilderEntity, TContainerEntity, TConfigurationEntity> : AbstractBuilder<TBuilderEntity, TContainerEntity, TConfigurationEntity>, ITestcontainersBuilder<TBuilderEntity, TContainerEntity>
+  public abstract class ContainerBuilder<TBuilderEntity, TContainerEntity, TConfigurationEntity> : AbstractBuilder<TBuilderEntity, TContainerEntity, TConfigurationEntity>, ITestcontainersBuilder<TBuilderEntity, TContainerEntity>
     where TContainerEntity : ITestcontainersContainer
-    where TConfigurationEntity : ITestcontainersConfiguration
+    where TConfigurationEntity : IContainerConfiguration
   {
     /// <summary>
-    /// Initializes a new instance of the <see cref="TestcontainersBuilder{TBuilderEntity, TContainerEntity, TConfigurationEntity}" /> class.
+    /// Initializes a new instance of the <see cref="ContainerBuilder{TBuilderEntity,TContainerEntity,TConfigurationEntity}" /> class.
     /// </summary>
     /// <param name="dockerResourceConfiguration">The Docker resource configuration.</param>
-    protected TestcontainersBuilder(TConfigurationEntity dockerResourceConfiguration)
+    protected ContainerBuilder(TConfigurationEntity dockerResourceConfiguration)
       : base(dockerResourceConfiguration)
     {
     }
@@ -67,49 +67,49 @@ namespace DotNet.Testcontainers.Builders
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithImage(IDockerImage image)
     {
-      return this.Clone(new TestcontainersConfiguration(image: image));
+      return this.Clone(new ContainerConfiguration(image: image));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithImagePullPolicy(Func<ImagesListResponse, bool> imagePullPolicy)
     {
-      return this.Clone(new TestcontainersConfiguration(imagePullPolicy: imagePullPolicy));
+      return this.Clone(new ContainerConfiguration(imagePullPolicy: imagePullPolicy));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithName(string name)
     {
-      return this.Clone(new TestcontainersConfiguration(name: name));
+      return this.Clone(new ContainerConfiguration(name: name));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithHostname(string hostname)
     {
-      return this.Clone(new TestcontainersConfiguration(hostname: hostname));
+      return this.Clone(new ContainerConfiguration(hostname: hostname));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithMacAddress(string macAddress)
     {
-      return this.Clone(new TestcontainersConfiguration(macAddress: macAddress));
+      return this.Clone(new ContainerConfiguration(macAddress: macAddress));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithWorkingDirectory(string workingDirectory)
     {
-      return this.Clone(new TestcontainersConfiguration(workingDirectory: workingDirectory));
+      return this.Clone(new ContainerConfiguration(workingDirectory: workingDirectory));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithEntrypoint(params string[] entrypoint)
     {
-      return this.Clone(new TestcontainersConfiguration(entrypoint: entrypoint));
+      return this.Clone(new ContainerConfiguration(entrypoint: entrypoint));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithCommand(params string[] command)
     {
-      return this.Clone(new TestcontainersConfiguration(command: command));
+      return this.Clone(new ContainerConfiguration(command: command));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
@@ -122,7 +122,7 @@ namespace DotNet.Testcontainers.Builders
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithEnvironment(IReadOnlyDictionary<string, string> environments)
     {
-      return this.Clone(new TestcontainersConfiguration(environments: environments));
+      return this.Clone(new ContainerConfiguration(environments: environments));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
@@ -135,7 +135,7 @@ namespace DotNet.Testcontainers.Builders
     public TBuilderEntity WithExposedPort(string port)
     {
       var exposedPorts = new Dictionary<string, string> { { port, port } };
-      return this.Clone(new TestcontainersConfiguration(exposedPorts: exposedPorts));
+      return this.Clone(new ContainerConfiguration(exposedPorts: exposedPorts));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
@@ -162,7 +162,7 @@ namespace DotNet.Testcontainers.Builders
     {
       // TODO: How to append `.WithExposedPort(containerPort)`?
       var portBindings = new Dictionary<string, string> { { containerPort, hostPort } };
-      return this.Clone(new TestcontainersConfiguration(portBindings: portBindings));
+      return this.Clone(new ContainerConfiguration(portBindings: portBindings));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
@@ -181,7 +181,7 @@ namespace DotNet.Testcontainers.Builders
     public TBuilderEntity WithResourceMapping(IResourceMapping resourceMapping)
     {
       var resourceMappings = new Dictionary<string, IResourceMapping> { { resourceMapping.Target, resourceMapping } };
-      return this.Clone(new TestcontainersConfiguration(resourceMappings: resourceMappings));
+      return this.Clone(new ContainerConfiguration(resourceMappings: resourceMappings));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
@@ -200,7 +200,7 @@ namespace DotNet.Testcontainers.Builders
     public TBuilderEntity WithMount(IMount mount)
     {
       var mounts = new[] { mount };
-      return this.Clone(new TestcontainersConfiguration(mounts: mounts));
+      return this.Clone(new ContainerConfiguration(mounts: mounts));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
@@ -261,7 +261,7 @@ namespace DotNet.Testcontainers.Builders
     public TBuilderEntity WithNetwork(IDockerNetwork dockerNetwork)
     {
       var networks = new[] { dockerNetwork };
-      return this.Clone(new TestcontainersConfiguration(networks: networks));
+      return this.Clone(new ContainerConfiguration(networks: networks));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
@@ -273,50 +273,50 @@ namespace DotNet.Testcontainers.Builders
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithNetworkAliases(IEnumerable<string> networkAliases)
     {
-      return this.Clone(new TestcontainersConfiguration(networkAliases: networkAliases));
+      return this.Clone(new ContainerConfiguration(networkAliases: networkAliases));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithAutoRemove(bool autoRemove)
     {
-      return this.Clone(new TestcontainersConfiguration(autoRemove: autoRemove));
+      return this.Clone(new ContainerConfiguration(autoRemove: autoRemove));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithPrivileged(bool privileged)
     {
-      return this.Clone(new TestcontainersConfiguration(privileged: privileged));
+      return this.Clone(new ContainerConfiguration(privileged: privileged));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithRegistryAuthentication(string registryEndpoint, string username, string password)
     {
-      return this.Clone(new TestcontainersConfiguration(dockerRegistryAuthenticationConfiguration: new DockerRegistryAuthenticationConfiguration(registryEndpoint, username, password)));
+      return this.Clone(new ContainerConfiguration(dockerRegistryAuthenticationConfiguration: new DockerRegistryAuthenticationConfiguration(registryEndpoint, username, password)));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithOutputConsumer(IOutputConsumer outputConsumer)
     {
-      return this.Clone(new TestcontainersConfiguration(outputConsumer: outputConsumer));
+      return this.Clone(new ContainerConfiguration(outputConsumer: outputConsumer));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithWaitStrategy(IWaitForContainerOS waitStrategy)
     {
-      return this.Clone(new TestcontainersConfiguration(waitStrategies: waitStrategy.Build()));
+      return this.Clone(new ContainerConfiguration(waitStrategies: waitStrategy.Build()));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithCreateContainerParametersModifier(Action<CreateContainerParameters> parameterModifier)
     {
       var parameterModifiers = new[] { parameterModifier };
-      return this.Clone(new TestcontainersConfiguration(parameterModifiers: parameterModifiers));
+      return this.Clone(new ContainerConfiguration(parameterModifiers: parameterModifiers));
     }
 
     /// <inheritdoc cref="ITestcontainersBuilder{TBuilderEntity, TContainerEntity}" />
     public TBuilderEntity WithStartupCallback(Func<IRunningDockerContainer, CancellationToken, Task> startupCallback)
     {
-      return this.Clone(new TestcontainersConfiguration(startupCallback: startupCallback));
+      return this.Clone(new ContainerConfiguration(startupCallback: startupCallback));
     }
 
     /// <summary>
@@ -324,6 +324,6 @@ namespace DotNet.Testcontainers.Builders
     /// </summary>
     /// <param name="dockerResourceConfiguration">The Docker resource configuration.</param>
     /// <returns>A configured instance of <typeparamref name="TBuilderEntity" />.</returns>
-    protected abstract TBuilderEntity Clone(ITestcontainersConfiguration dockerResourceConfiguration);
+    protected abstract TBuilderEntity Clone(IContainerConfiguration dockerResourceConfiguration);
   }
 }

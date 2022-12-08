@@ -259,7 +259,7 @@ namespace DotNet.Testcontainers.Clients
     }
 
     /// <inheritdoc />
-    public async Task<string> RunAsync(ITestcontainersConfiguration configuration, CancellationToken ct = default)
+    public async Task<string> RunAsync(IContainerConfiguration configuration, CancellationToken ct = default)
     {
       async Task CopyResourceMapping(string containerId, IResourceMapping resourceMapping)
       {

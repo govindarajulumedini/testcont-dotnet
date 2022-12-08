@@ -6,7 +6,7 @@ namespace DotNet.Testcontainers.Configurations
   /// <summary>
   /// A Dockerfile configuration.
   /// </summary>
-  public interface IImageFromDockerfileConfiguration : IDockerResourceConfiguration
+  public interface IImageFromDockerfileConfiguration : IResourceConfiguration
   {
     /// <summary>
     /// Gets a value indicating whether an existing image is removed or not.

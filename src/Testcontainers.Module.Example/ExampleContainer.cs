@@ -3,9 +3,9 @@ namespace Testcontainers.Module.Example
   using DotNet.Testcontainers.Containers;
   using Microsoft.Extensions.Logging;
 
-  internal sealed class ExampleTestcontainers : TestcontainersContainer, IExampleTestcontainers
+  internal sealed class ExampleContainer : TestcontainersContainer, IExampleContainer
   {
-    public ExampleTestcontainers(IExampleTestcontainersConfiguration configuration, ILogger logger)
+    public ExampleContainer(IExampleConfiguration configuration, ILogger logger)
       : base(configuration, logger)
     {
       this.Username = configuration.Username;

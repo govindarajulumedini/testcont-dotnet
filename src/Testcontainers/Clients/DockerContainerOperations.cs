@@ -166,7 +166,7 @@ namespace DotNet.Testcontainers.Clients
       }
     }
 
-    public async Task<string> RunAsync(ITestcontainersConfiguration configuration, CancellationToken ct = default)
+    public async Task<string> RunAsync(IContainerConfiguration configuration, CancellationToken ct = default)
     {
       var converter = new TestcontainersConfigurationConverter(configuration);
 

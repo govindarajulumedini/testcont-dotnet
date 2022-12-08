@@ -3,14 +3,14 @@
   using System.Collections.Generic;
 
   /// <inheritdoc cref="ITestcontainersNetworkConfiguration" />
-  internal sealed class TestcontainersNetworkConfiguration : DockerResourceConfiguration, ITestcontainersNetworkConfiguration
+  internal sealed class TestcontainersNetworkConfiguration : ResourceConfiguration, ITestcontainersNetworkConfiguration
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="TestcontainersNetworkConfiguration" /> class.
     /// </summary>
-    /// <param name="dockerResourceConfiguration">The Docker resource configuration.</param>
-    public TestcontainersNetworkConfiguration(IDockerResourceConfiguration dockerResourceConfiguration)
-      : base(dockerResourceConfiguration)
+    /// <param name="resourceConfiguration">The Docker resource configuration.</param>
+    public TestcontainersNetworkConfiguration(IResourceConfiguration resourceConfiguration)
+      : base(resourceConfiguration)
     {
     }
 

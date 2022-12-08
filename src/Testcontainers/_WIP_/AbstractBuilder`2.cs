@@ -14,7 +14,7 @@ namespace DotNet.Testcontainers.Builders
   /// <typeparam name="TConfigurationEntity">The configuration entity.</typeparam>
   [PublicAPI]
   public abstract class AbstractBuilder<TBuilderEntity, TResourceEntity, TConfigurationEntity> : IAbstractBuilder<TBuilderEntity, TResourceEntity>
-    where TConfigurationEntity : IDockerResourceConfiguration
+    where TConfigurationEntity : IResourceConfiguration
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="AbstractBuilder{TBuilderEntity, TConfigurationEntity, TContainerEntity}" /> class.
@@ -46,7 +46,7 @@ namespace DotNet.Testcontainers.Builders
     /// <inheritdoc cref="IAbstractBuilder{TBuilderEntity, TContainerEntity}" />
     public virtual TBuilderEntity WithDockerEndpoint(IDockerEndpointAuthenticationConfiguration dockerEndpointAuthConfig)
     {
-      return this.Clone(new DockerResourceConfiguration(dockerEndpointAuthConfig));
+      return this.Clone(new ResourceConfiguration(dockerEndpointAuthConfig));
     }
 
     /// <inheritdoc cref="IAbstractBuilder{TBuilderEntity, TContainerEntity}" />
@@ -59,7 +59,7 @@ namespace DotNet.Testcontainers.Builders
     public virtual TBuilderEntity WithLabel(string name, string value)
     {
       var labels = new Dictionary<string, string> { { name, value } };
-      return this.Clone(new DockerResourceConfiguration(labels: labels));
+      return this.Clone(new ResourceConfiguration(labels: labels));
     }
 
     /// <inheritdoc cref="IAbstractBuilder{TBuilderEntity, TContainerEntity}" />
@@ -74,15 +74,15 @@ namespace DotNet.Testcontainers.Builders
     /// <summary>
     /// Clones the Docker resource builder configuration.
     /// </summary>
-    /// <param name="dockerResourceConfiguration">The Docker resource configuration.</param>
+    /// <param name="resourceConfiguration">The Docker resource configuration.</param>
     /// <returns>A configured instance of <typeparamref name="TBuilderEntity" />.</returns>
-    protected abstract TBuilderEntity Clone(IDockerResourceConfiguration dockerResourceConfiguration);
+    protected abstract TBuilderEntity Clone(IResourceConfiguration resourceConfiguration);
 
     /// <summary>
     /// Merges the Docker resource builder configuration.
     /// </summary>
-    /// <param name="next"></param>
-    /// <param name="previous"></param>
+    /// <param name="next">Changed configuration.</param>
+    /// <param name="previous">Previous configuration.</param>
     /// <returns>A configured instance of <typeparamref name="TBuilderEntity" />.</returns>
     protected abstract TBuilderEntity Merge(TConfigurationEntity next, TConfigurationEntity previous);
   }

@@ -11,11 +11,11 @@ namespace DotNet.Testcontainers.Configurations
   using DotNet.Testcontainers.Networks;
   using JetBrains.Annotations;
 
-  /// <inheritdoc cref="ITestcontainersConfiguration" />
+  /// <inheritdoc cref="IContainerConfiguration" />
   [PublicAPI]
-  public class TestcontainersConfiguration : DockerResourceConfiguration, ITestcontainersConfiguration
+  public class ContainerConfiguration : ResourceConfiguration, IContainerConfiguration
   {
-    public TestcontainersConfiguration(
+    public ContainerConfiguration(
       IDockerRegistryAuthenticationConfiguration dockerRegistryAuthenticationConfiguration = null,
       IDockerImage image = null,
       Func<ImagesListResponse, bool> imagePullPolicy = null,
@@ -63,17 +63,17 @@ namespace DotNet.Testcontainers.Configurations
       this.StartupCallback = startupCallback;
     }
 
-    protected TestcontainersConfiguration(IDockerResourceConfiguration dockerResourceConfiguration)
-      : base(dockerResourceConfiguration)
+    protected ContainerConfiguration(IResourceConfiguration resourceConfiguration)
+      : base(resourceConfiguration)
     {
     }
 
-    protected TestcontainersConfiguration(ITestcontainersConfiguration dockerResourceConfiguration)
-      : this(dockerResourceConfiguration, new TestcontainersConfiguration())
+    protected ContainerConfiguration(IContainerConfiguration dockerResourceConfiguration)
+      : this(dockerResourceConfiguration, new ContainerConfiguration())
     {
     }
 
-    protected TestcontainersConfiguration(ITestcontainersConfiguration next, ITestcontainersConfiguration previous)
+    protected ContainerConfiguration(IContainerConfiguration next, IContainerConfiguration previous)
       : base(next, previous)
     {
       this.DockerRegistryAuthConfig = BuildConfiguration.Combine(next.DockerRegistryAuthConfig, previous.DockerRegistryAuthConfig);

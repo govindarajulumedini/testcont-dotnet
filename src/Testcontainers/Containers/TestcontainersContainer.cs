@@ -23,7 +23,7 @@ namespace DotNet.Testcontainers.Containers
 
     private readonly ITestcontainersClient client;
 
-    private readonly ITestcontainersConfiguration configuration;
+    private readonly IContainerConfiguration configuration;
 
     private int disposed;
 
@@ -35,7 +35,7 @@ namespace DotNet.Testcontainers.Containers
     /// </summary>
     /// <param name="configuration">The Testcontainers configuration.</param>
     /// <param name="logger">The logger.</param>
-    public TestcontainersContainer(ITestcontainersConfiguration configuration, ILogger logger)
+    public TestcontainersContainer(IContainerConfiguration configuration, ILogger logger)
     {
       this.client = new TestcontainersClient(configuration.SessionId, configuration.DockerEndpointAuthConfig, logger);
       this.configuration = configuration;

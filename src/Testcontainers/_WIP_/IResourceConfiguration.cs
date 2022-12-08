@@ -6,7 +6,7 @@
   /// <summary>
   /// A Docker resource configuration.
   /// </summary>
-  public interface IDockerResourceConfiguration
+  public interface IResourceConfiguration
   {
     /// <summary>
     /// Gets the session id.
