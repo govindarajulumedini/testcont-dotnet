@@ -15,4 +15,7 @@
     <PackageReference Include="SharpZipLib" />
     <PackageReference Include="System.Text.Json" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Configurations\Containers" />
+  </ItemGroup>
 </Project>
