@@ -37,16 +37,16 @@ namespace Testcontainers.Module.Example
     {
       // Receives a configuration update from one of the base class implementations. The configuration update only contains properties from either one of the base class configuration types.
       // If we merge the configurations immediately we will lose any properties that are unknown by the base configuration:
-      // E.g. for IDockerResourceConfiguration ⨉ IExampleTestcontainersConfiguration we will lose username and password. Due to immutable data we can only merge the same types.
+      // E.g. for IResourceConfiguration ⨉ IExampleConfiguration we will lose username and password. Due to immutable data we can only merge the same types.
       return this.Merge(new ExampleConfiguration(resourceConfiguration), this.DockerResourceConfiguration);
     }
 
-    protected override ExampleBuilder Clone(IContainerConfiguration dockerResourceConfiguration)
+    protected override ExampleBuilder Clone(IContainerConfiguration resourceConfiguration)
     {
       // Receives a configuration update from one of the base class implementations. The configuration update only contains properties from either one of the base class configuration types.
       // If we merge the configurations immediately we will lose any properties that are unknown by the base configuration:
-      // E.g. for ITestcontainersConfiguration ⨉ IExampleTestcontainersConfiguration we will lose username and password. Due to immutable data we can only merge the same types.
-      return this.Merge(new ExampleConfiguration(dockerResourceConfiguration), this.DockerResourceConfiguration);
+      // E.g. for IContainerConfiguration ⨉ IExampleConfiguration we will lose username and password. Due to immutable data we can only merge the same types.
+      return this.Merge(new ExampleConfiguration(resourceConfiguration), this.DockerResourceConfiguration);
     }
 
     protected override ExampleBuilder Merge(IExampleConfiguration next, IExampleConfiguration previous)

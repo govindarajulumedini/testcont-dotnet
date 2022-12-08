@@ -322,8 +322,8 @@ namespace DotNet.Testcontainers.Builders
     /// <summary>
     /// Clones the Docker resource builder configuration.
     /// </summary>
-    /// <param name="dockerResourceConfiguration">The Docker resource configuration.</param>
+    /// <param name="resourceConfiguration">The Docker resource configuration.</param>
     /// <returns>A configured instance of <typeparamref name="TBuilderEntity" />.</returns>
-    protected abstract TBuilderEntity Clone(IContainerConfiguration dockerResourceConfiguration);
+    protected abstract TBuilderEntity Clone(IContainerConfiguration resourceConfiguration);
   }
 }

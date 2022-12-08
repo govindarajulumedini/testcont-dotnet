@@ -36,7 +36,7 @@ namespace DotNet.Testcontainers.Builders
     }
 
     /// <inheritdoc />
-    protected override ContainerBuilder<TContainerEntity> Clone(IContainerConfiguration dockerResourceConfiguration)
+    protected override ContainerBuilder<TContainerEntity> Clone(IContainerConfiguration resourceConfiguration)
     {
       throw new NotImplementedException();
     }
