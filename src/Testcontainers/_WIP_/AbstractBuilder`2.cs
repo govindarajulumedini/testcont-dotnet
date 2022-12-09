@@ -29,7 +29,7 @@ namespace DotNet.Testcontainers.Builders
     /// <summary>
     /// Gets the Docker resource configuration.
     /// </summary>
-    protected TConfigurationEntity DockerResourceConfiguration { get; }
+    protected virtual TConfigurationEntity DockerResourceConfiguration { get; }
 
     /// <inheritdoc cref="IAbstractBuilder{TBuilderEntity, TContainerEntity}" />
     public virtual TBuilderEntity WithDockerEndpoint(string endpoint)
@@ -70,6 +70,8 @@ namespace DotNet.Testcontainers.Builders
 
     /// <inheritdoc cref="IAbstractBuilder{TBuilderEntity, TContainerEntity}" />
     public abstract TResourceEntity Build();
+
+    protected abstract TBuilderEntity Init();
 
     /// <summary>
     /// Clones the Docker resource builder configuration.

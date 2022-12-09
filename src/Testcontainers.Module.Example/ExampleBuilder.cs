@@ -11,12 +11,16 @@ namespace Testcontainers.Module.Example
     public ExampleBuilder()
       : base(new ExampleConfiguration())
     {
+      this.DockerResourceConfiguration = this.Init().DockerResourceConfiguration;
     }
 
     private ExampleBuilder(IExampleConfiguration dockerResourceConfiguration)
       : base(dockerResourceConfiguration)
     {
+      this.DockerResourceConfiguration = dockerResourceConfiguration;
     }
+
+    protected override IExampleConfiguration DockerResourceConfiguration { get; }
 
     public ExampleBuilder WithUsername(string username)
     {
@@ -31,6 +35,11 @@ namespace Testcontainers.Module.Example
     public override IExampleContainer Build()
     {
       return new ExampleContainer(this.DockerResourceConfiguration, NullLogger.Instance);
+    }
+
+    protected override ExampleBuilder Init()
+    {
+      return base.Init().WithLabel("FOO", "BAR");
     }
 
     protected override ExampleBuilder Clone(IResourceConfiguration resourceConfiguration)
@@ -51,7 +60,7 @@ namespace Testcontainers.Module.Example
 
     protected override ExampleBuilder Merge(IExampleConfiguration next, IExampleConfiguration previous)
     {
-      return new ExampleBuilder(new ExampleConfiguration(next, previous));
+      return new ExampleBuilder(new ExampleConfiguration(next, previous ?? new ExampleConfiguration()));
     }
   }
 }

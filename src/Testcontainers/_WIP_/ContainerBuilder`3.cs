@@ -7,6 +7,7 @@ namespace DotNet.Testcontainers.Builders
   using System.Threading;
   using System.Threading.Tasks;
   using Docker.DotNet.Models;
+  using DotNet.Testcontainers.Clients;
   using DotNet.Testcontainers.Configurations;
   using DotNet.Testcontainers.Containers;
   using DotNet.Testcontainers.Images;
@@ -40,6 +41,7 @@ namespace DotNet.Testcontainers.Builders
   /// <typeparam name="TConfigurationEntity">The configuration entity.</typeparam>
   [PublicAPI]
   public abstract class ContainerBuilder<TBuilderEntity, TContainerEntity, TConfigurationEntity> : AbstractBuilder<TBuilderEntity, TContainerEntity, TConfigurationEntity>, ITestcontainersBuilder<TBuilderEntity, TContainerEntity>
+    where TBuilderEntity : ITestcontainersBuilder<TBuilderEntity, TContainerEntity>
     where TContainerEntity : ITestcontainersContainer
     where TConfigurationEntity : IContainerConfiguration
   {
@@ -317,6 +319,11 @@ namespace DotNet.Testcontainers.Builders
     public TBuilderEntity WithStartupCallback(Func<IRunningDockerContainer, CancellationToken, Task> startupCallback)
     {
       return this.Clone(new ContainerConfiguration(startupCallback: startupCallback));
+    }
+
+    protected override TBuilderEntity Init()
+    {
+      return this.WithDockerEndpoint(TestcontainersSettings.OS.DockerEndpointAuthConfig);
     }
 
     /// <summary>
