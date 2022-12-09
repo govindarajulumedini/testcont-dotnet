@@ -32,7 +32,7 @@ namespace DotNet.Testcontainers.Containers
     /// </summary>
     private const int RetryTimeoutInSeconds = 2;
 
-    private static readonly IDockerImage RyukImage = new DockerImage("mdelapenya/ryuk:temp3");
+    private static readonly IDockerImage RyukImage = new DockerImage("mdelapenya/ryuk:0.3.4-SNAPSHOT-5b0e7ec");
 
     private static readonly SemaphoreSlim DefaultLock = new SemaphoreSlim(1, 1);
 

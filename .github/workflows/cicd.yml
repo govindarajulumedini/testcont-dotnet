@@ -34,29 +34,29 @@ jobs:
           clean: true
           lfs: true
 
-      - name: Pull Ryuk
-        run: docker pull mdelapenya/ryuk:temp3
+      # - name: Pull Ryuk
+      #   run: docker pull mdelapenya/ryuk:temp3
 
-      - name: Run Ryuk on Linux
-        if: ${{ matrix.os == 'ubuntu-22.04' }}
-        run: docker run -v /var/run/docker.sock:/var/run/docker.sock mdelapenya/ryuk:temp3
+      # - name: Run Ryuk on Linux
+      #   if: ${{ matrix.os == 'ubuntu-22.04' }}
+      #   run: docker run -v /var/run/docker.sock:/var/run/docker.sock mdelapenya/ryuk:temp3
 
-      - name: Run Ryuk on Windows
-        if: ${{ matrix.os == 'windows-2022' }}
-        run: docker run -v //./pipe/docker_engine://./pipe/docker_engine mdelapenya/ryuk:temp3
-        continue-on-error: true
+      # - name: Run Ryuk on Windows
+      #   if: ${{ matrix.os == 'windows-2022' }}
+      #   run: docker run -v //./pipe/docker_engine://./pipe/docker_engine mdelapenya/ryuk:temp3
+      #   continue-on-error: true
 
-      - name: Run Ryuk on Windows (override daemon.json)
-        if: ${{ matrix.os == 'windows-2022' }}
-        run: | # https://learn.microsoft.com/de-de/virtualization/windowscontainers/manage-docker/configure-docker-daemon#set-docker-security-group
-          $daemonSettings = New-Object PSObject
-          $daemonSettings | Add-Member NoteProperty hosts @("npipe://")
-          $daemonSettings | Add-Member NoteProperty group "Users"
-          $daemonSettings | ConvertTo-Json | Out-File -FilePath "$($env:ProgramData)\docker\config\daemon.json" -Encoding ASCII
-          Get-Service -Name *docker* | Restart-Service
-          Start-Sleep -Seconds 30
-          docker run -v //./pipe/docker_engine://./pipe/docker_engine mdelapenya/ryuk:temp3
-        continue-on-error: true
+      # - name: Run Ryuk on Windows (override daemon.json)
+      #   if: ${{ matrix.os == 'windows-2022' }}
+      #   run: | # https://learn.microsoft.com/de-de/virtualization/windowscontainers/manage-docker/configure-docker-daemon#set-docker-security-group
+      #     $daemonSettings = New-Object PSObject
+      #     $daemonSettings | Add-Member NoteProperty hosts @("npipe://")
+      #     $daemonSettings | Add-Member NoteProperty group "Users"
+      #     $daemonSettings | ConvertTo-Json | Out-File -FilePath "$($env:ProgramData)\docker\config\daemon.json" -Encoding ASCII
+      #     Get-Service -Name *docker* | Restart-Service
+      #     Start-Sleep -Seconds 30
+      #     docker run -v //./pipe/docker_engine://./pipe/docker_engine mdelapenya/ryuk:temp3
+      #   continue-on-error: true
 
       - name: Cache NuGet Packages
         uses: actions/cache@v3
